@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #282c34;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            background-color: #1c1c1c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #000;
+            width: 300px;
+        }
+
+        .display {
+            background: #000;
+            color: #0f0;
+            text-align: right;
+            padding: 20px;
+            font-size: 2em;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 20px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #333;
+            color: #fff;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        .operator {
+            background: #ff9500;
+        }
+
+        .equal {
+            background: #34c759;
+        }
+
+        .clear {
+            background: #ff3b30;
+            grid-column: span 4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn" data-value="7">7</button>
+            <button class="btn" data-value="8">8</button>
+            <button class="btn" data-value="9">9</button>
+            <button class="btn operator" data-value="/">÷</button>
+
+            <button class="btn" data-value="4">4</button>
+            <button class="btn" data-value="5">5</button>
+            <button class="btn" data-value="6">6</button>
+            <button class="btn operator" data-value="*">×</button>
+
+            <button class="btn" data-value="1">1</button>
+            <button class="btn" data-value="2">2</button>
+            <button class="btn" data-value="3">3</button>
+            <button class="btn operator" data-value="-">−</button>
+
+            <button class="btn" data-value="0">0</button>
+            <button class="btn" data-value=".">.</button>
+            <button class="btn equal" id="equals">=</button>
+            <button class="btn operator" data-value="+">+</button>
+
+            <button class="btn clear" id="clear">C</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById("display");
+        const buttons = document.querySelectorAll(".btn");
+        let currentInput = "";
+        let resetNext = false;
+
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                const value = button.getAttribute("data-value");
+
+                if (button.id === "clear") {
+                    currentInput = "";
+                    display.textContent = "0";
+                    return;
+                }
+
+                if (button.id === "equals") {
+                    try {
+                        currentInput = eval(currentInput).toString();
+                        display.textContent = currentInput;
+                        resetNext = true;
+                    } catch {
+                        display.textContent = "Error";
+                    }
+                    return;
+                }
+
+                if (resetNext && !isNaN(value)) {
+                    currentInput = "";
+                    resetNext = false;
+                }
+
+                currentInput += value;
+                display.textContent = currentInput;
+            });
+        });
+    </script>
+
+</body>
+
+</html>
